@@ -7,7 +7,7 @@ export interface Place {
 	lat: string;
 	licence: string;
 	lon: string;
-	name?: string;
+	name: string;
 	osm_id: number;
 	osm_type: string;
 	place_id: number;

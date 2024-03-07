@@ -2,12 +2,12 @@ import * as React from 'react';
 
 export interface IGeolocationCoordinates {
 	 accuracy: number;
-	 altitude?: number;
-	 altitudeAccuracy?: number;
-	 heading?: string;
+	 altitude?: number | null;
+	 altitudeAccuracy?: number | null;
+	 heading?: number | null;
 	 latitude: number;
 	 longitude: number;
-	 speed?: number;
+	 speed?: number | null;
 }
 
 export const getCurrentLocation = async (): Promise<IGeolocationCoordinates> => {

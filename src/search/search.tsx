@@ -1,11 +1,15 @@
 import * as React from "react";
 import type { Place } from "./nominatim.type"
 
+
+interface SearchData extends Pick<Place, "display_name" | "lat" | "lon"> {
+	length: number;
+	searchTerm: string;
+}
+
 export interface SearchResult {
 	error: Error | null;
-	data: {
-		searchTerm: string;
-	} & Omit<Place, "searchTerm">;
+	data: SearchData;
 	hasError: boolean;
 	isLoading: boolean;
 }
@@ -32,8 +36,11 @@ export function Search (props: SearchProps) {
 			if (data.length > 0) {
 				props.onSearch({
 					data: {
+						display_name: data[0].display_name,
+						lat: data[0].lat,
+						length: 1,
+						lon: data[0].lon,
 						searchTerm: inputVal,
-						...data[0],
 					},
 					error: null,
 					hasError: false,
@@ -42,6 +49,10 @@ export function Search (props: SearchProps) {
 			} else {
 				props.onSearch({
 					data: {
+						display_name: "",
+						lat: "0",
+						length: 0,
+						lon: "0",
 						searchTerm: inputVal,
 					},
 					error: null,
@@ -53,9 +64,13 @@ export function Search (props: SearchProps) {
 		catch (error) {
 			props.onSearch({
 				data: {
+					display_name: "",
+					lat: "0",
+					length: 0,
+					lon: "0",
 					searchTerm: inputVal,
 				},
-				error,
+				error: error as Error | null,
 				hasError: true,
 				isLoading: false,
 			});

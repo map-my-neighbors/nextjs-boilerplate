@@ -1,9 +1,10 @@
+import type { LatLngExpression } from "leaflet";
 import * as React from "react";
 import { Marker, Popup, useMap } from "react-leaflet";
 
 export interface NeighborProps {
 	children?: React.ReactNode;
-	position?: number[];
+	position: LatLngExpression;
 }
 
 export function Neighbor (props: NeighborProps) {

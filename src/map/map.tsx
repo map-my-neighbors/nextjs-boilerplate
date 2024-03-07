@@ -1,4 +1,5 @@
 import "leaflet-defaulticon-compatibility";
+import type { LatLngExpression } from "leaflet";
 import * as React from "react";
 import { MapContainer } from "react-leaflet";
 import { Neighbor } from "../neighbor";
@@ -15,7 +16,7 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 export default function Map () {
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [markers, setMarkers] = React.useState<JSX.Element[]>([]);
-	const [position, setPosition] = React.useState<number[]>([0, 0]);
+	const [position, setPosition] = React.useState<LatLngExpression>([0, 0]);
 	const [zoomLevel, setZoomLevel] = React.useState<number>(2);
 
 	const loc = useCurrentLocation();
@@ -31,20 +32,23 @@ export default function Map () {
 		fetchData();
 	}, [loc]);
 
-	const handleSearch = (result: SearchResult["data"]) => {
+	const handleSearch = (result: SearchResult) => {
+		if (result?.data?.length > 0) {
+
 		const newMarker = (
 			<Neighbor
-				key={result?.data?.display_name}
+				key={result.data?.display_name}
 				position={[
-					parseFloat(result?.data?.lat),
-					parseFloat(result?.data?.lon),
+					parseFloat(result.data.lat),
+					parseFloat(result.data.lon),
 				]}
 			>
-				{result?.data?.display_name}
+				{result.data.display_name}
 			</Neighbor>
 		);
 
 		setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
+		}
 	}
 
 	if (isLoading) {
